@@ -2,13 +2,16 @@ const hospital = require('./hospital_class_porperty')
 const data = require('./hospital_information.json')
 const http = require('http')
 const port = 8080;
+const findHospital = require('./findKey');
+const { rmSync } = require('fs');
+const path = require('path');
 // 1. create newData with only data we need
 let newDatas = []
 
 
 data.map((item, index) => {
-    const { tunnus, orderNum, hospitalName, address, organisaatio } = item
-    let newData = new hospital(tunnus, orderNum, hospitalName, address, organisaatio)
+    const { tunnus, orderNum, hospitalName, address, organisaatio, postinumero } = item
+    let newData = new hospital(tunnus, orderNum, hospitalName, address, organisaatio, postinumero)
 
     newDatas.push(newData)
 })
@@ -22,12 +25,27 @@ newDatas.map((item, index) => {
 //   2.1 now we can send data all the private name: 
 
 const server = http.createServer((req, res) => {
-
     const newUrl = new URL(`http://${req.headers.host}${req.url}`)
-    res.writeHead(200, {
-        'Content-Type': 'application/json'
-    })
-    res.end(JSON.stringify({ status: 200, msg: 'success', hospitalPrivate }))
+    const { searchParams, host, port, pathname, search } = newUrl
+    if (pathname === '/') {
+        res.writeHead(200, {
+            "Content-Type": 'text/json; charset = utf-8'
+        })
+        res.end(JSON.stringify({ status: 200, msg: 'success', hospitalPrivate }))
+    }
+    else if (pathname === '/find') {
+        res.writeHead(200, {
+            "Content-Type": 'text/json; charset = utf-8'
+        })
+        // let find the list by their tunnus
+        let foundList = findHospital(searchParams.get('id'), hospitalPrivate)
+        res.end(JSON.stringify({ foundList }))
+
+    }
+    else {
+        res.writeHead(404)
+        res.end('resource not found')
+    }
 })
 server.listen(port, () => {
     console.log(`listening on port : ${port}.....`)
