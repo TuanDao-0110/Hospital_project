@@ -2,7 +2,8 @@ const hospital = require('./hospital_class_porperty')
 const data = require('./hospital_information.json')
 const http = require('http')
 const port = 8080;
-const findHospital = require('./findKey');
+const findHospitalID = require('./searchFn/findKey');
+const findListHospitalName  =require('./searchFn/findName')
 const { rmSync } = require('fs');
 const path = require('path');
 // 1. create newData with only data we need
@@ -38,8 +39,15 @@ const server = http.createServer((req, res) => {
             "Content-Type": 'text/json; charset = utf-8'
         })
         // let find the list by their tunnus
-        let foundList = findHospital(searchParams.get('id'), hospitalPrivate)
-        res.end(JSON.stringify({ foundList }))
+        if (searchParams.has('id')){
+
+            let foundList = findHospitalID(searchParams.get('id'), hospitalPrivate)
+            res.end(JSON.stringify({ foundList }))
+        }
+        if (searchParams.has('name')){
+            let foundList = findListHospitalName(searchParams.get('name'), hospitalPrivate)
+            res.end(JSON.stringify({ foundList }))
+        }
 
     }
     else {
