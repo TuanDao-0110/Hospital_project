@@ -1,4 +1,4 @@
-const hospital = require('./hospital_porperty')
+const hospital = require('./hospital_class_porperty')
 const data = require('./hospital_information.json')
 
 
