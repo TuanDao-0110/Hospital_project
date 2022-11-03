@@ -11,3 +11,6 @@
 # Hospital_project
 
 [] .....
+
+
+# run  node index.js ==> to start server 
