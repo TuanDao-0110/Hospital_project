@@ -10,6 +10,7 @@ const adminSchema = new mongoose.Schema({
         type: String,
         required: [true, 'please provide nick name']
     }, role: {
+        type: String,
         default: 'admin'
     }
     , password: {

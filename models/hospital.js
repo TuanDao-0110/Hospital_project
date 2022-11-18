@@ -7,7 +7,9 @@ const hospitalSchema = new mongoose.Schema({
     "password": {
         type: String,
         required: [true, 'please provide password']
-    }, role: {
+    },
+    "role": {
+        type: String,
         default: 'hospital'
     }
 })
